@@ -1,0 +1,1 @@
+[{"model": "lms.course", "pk": 1, "fields": {"title": "Физика", "preview_image": "", "description": null}}, {"model": "lms.lesson", "pk": 1, "fields": {"title": "Кванты", "preview_image": "", "description": null, "video_link": "https://youtu.be/9kHl0YM3Wqk?si=KVKle8rbzrY6TOni", "course": 1}}]
