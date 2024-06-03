@@ -9,9 +9,16 @@ class LessonSerializer(ModelSerializer):
         fields = "__all__"
 
 
+class LessonCourseSerializer(ModelSerializer):
+
+    class Meta:
+        model = Lesson
+        fields = ['title', 'description']
+
+
 class CourseSerializer(ModelSerializer):
     lessons_in_course = SerializerMethodField()
-    lessons = LessonSerializer(many=True, source='lesson')
+    lessons = LessonCourseSerializer(many=True, source='lesson')
 
     class Meta:
         model = Course
