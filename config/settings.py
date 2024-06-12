@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "rest_framework_simplejwt",
+    "drf_yasg",
     "users",
     "lms",
 ]
@@ -155,3 +156,5 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 LOGIN_URL = "/login/"
+
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")

@@ -10,6 +10,8 @@ from lms.models import Course, Lesson, Subscription
 from lms.paginations import CustomPagination
 from lms.serializers import (CourseSerializer, LessonSerializer,
                              SubscriptionSerializer)
+from lms.services import (create_stripe_price, create_stripe_product,
+                          create_stripe_session)
 from users.permissions import IsModer, IsOwner
 
 
@@ -84,3 +86,20 @@ class SubscriptionAPIView(APIView):
             Subscription.objects.create(user=user, course=course)
             message = "Подписка включена"
         return Response({"message": message})
+
+
+class SubscriptionCreateAPIView(CreateAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        course_id = self.request.data.get("course")
+        course = get_object_or_404(Course, pk=course_id)
+        product = create_stripe_product(course.title)
+        price = create_stripe_price(product, course.price)
+        session = create_stripe_session(price)
+        subscription = serializer.save(
+            user=user, course=course, payment_link=session.get("url")
+        )
+        subscription.save()
