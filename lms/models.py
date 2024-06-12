@@ -25,6 +25,11 @@ class Course(models.Model):
         verbose_name="владелец",
         help_text="Укажите владельца",
     )
+    price = models.IntegerField(
+        default=0,
+        verbose_name="Цена курса",
+        help_text="Укажите цену курса",
+    )
 
     def __str__(self):
         return f"{self.title}"
@@ -90,6 +95,12 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
         verbose_name="курс в подписке",
         help_text="Укажите курс",
+    )
+    payment_link = models.URLField(
+        max_length=400,
+        **NULLABLE,
+        verbose_name="ссылка на оплату",
+        help_text="Укажите ссылку на оплату",
     )
 
     def __str__(self):
