@@ -36,7 +36,7 @@ class CourseViewSet(ModelViewSet):
         return super().get_permissions()
 
     def perform_update(self, serializer):
-        send_mail_about_course_update.delay(course=self.get_object())
+        send_mail_about_course_update.delay(course_id=self.get_object().pk, course_title=self.get_object().title)
         super().perform_update(serializer)
 
 
@@ -49,7 +49,7 @@ class LessonCreateApiView(CreateAPIView):
         lesson = serializer.save()
         lesson.owner = self.request.user
         lesson.save()
-        send_mail_about_course_update.delay(course=lesson.course)
+        send_mail_about_course_update(course_id=lesson.course.pk, course_title=lesson.course.title)
 
 
 class LessonListApiView(ListAPIView):

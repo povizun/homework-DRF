@@ -8,14 +8,14 @@ from lms.models import Subscription
 
 
 @shared_task
-def send_mail_about_course_update(course):
+def send_mail_about_course_update(course_id, course_title):
     """Отправка письма об обновлении курса подписанным пользователям"""
-    subscriptions = Subscription.objects.filter(course=course.pk)
+    subscriptions = Subscription.objects.filter(course=course_id)
     if subscriptions:
         try:
             send_mail(
                 "Курс, на который вы подписаны, обновился",
-                f"Курс {course.title} обновился",
+                f"Курс {course_title} обновился",
                 EMAIL_HOST_USER,
                 [subscription.user.email for subscription in subscriptions],
             )
